@@ -1,10 +1,10 @@
 import Column from "./column";
-const Board = ({ onClick }) => {
+const Board = ({ onClick, gameBoard }) => {
   return (
     <div className="board">
-      <Column indexes={[1, 4, 7]} onClick={onClick} />
-      <Column indexes={[2, 5, 8]} onClick={onClick} />
-      <Column indexes={[3, 6, 9]} onClick={onClick} />
+      <Column indexes={[0, 3, 6]} onClick={onClick} gameBoard={gameBoard} />
+      <Column indexes={[1, 4, 7]} onClick={onClick} gameBoard={gameBoard} />
+      <Column indexes={[2, 5, 8]} onClick={onClick} gameBoard={gameBoard} />
     </div>
   );
 };

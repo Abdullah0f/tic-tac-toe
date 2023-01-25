@@ -1,10 +1,14 @@
 import X from "../imgs/X.png";
 import O from "../imgs/O.png";
-const Cell = ({ index, onClick }) => {
+const Cell = ({ index, onClick, gameBoard }) => {
+  const getClass = (thing) => {
+    if (thing === "x") return "x" + (gameBoard[index] === 1 ? " show" : "");
+    else return "o" + (gameBoard[index] === -1 ? " show" : "");
+  };
   return (
     <div className="cell" id={"cell-" + index} onClick={onClick}>
-      <img className="x" src={X} alt="" />
-      <img className="o" src={O} alt="" />
+      <img className={getClass("x")} src={X} alt="" />
+      <img className={getClass()} src={O} alt="" />
     </div>
   );
 };

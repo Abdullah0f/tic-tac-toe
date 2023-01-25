@@ -4,6 +4,12 @@ display:none;
  .o{
 display:none;
 }
+.x.show{
+display:inline;
+}
+ .o.show{
+display:inline;
+}
 .board{
   width: 500px;
   margin: 30px auto;
@@ -18,16 +24,16 @@ display:none;
   cursor: pointer;
 }
 
-#cell-1,#cell-4,#cell-7{
+#cell-0,#cell-3,#cell-6{
   border-left: none;
 }
-#cell-3,#cell-6,#cell-9{
+#cell-2,#cell-5,#cell-8{
   border-right: none;
 }
-#cell-1,#cell-2,#cell-3{
+#cell-0,#cell-1,#cell-2{
   border-top: none;
 }
-#cell-7,#cell-8,#cell-9{
+#cell-6,#cell-7,#cell-8{
   border-bottom: none;
 }
 
