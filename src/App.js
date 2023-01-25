@@ -1,11 +1,13 @@
-import logo from "./logo.svg";
+import { checkWinner } from "./utils/functions";
 import "./App.css";
 import Board from "./components/board";
 import { useState } from "react";
 
 function App() {
-  const [turn, setTurn] = useState("X");
-  const [gameState, setGameState] = useState([0, 0, 0, 0, 0, 0, 0, 0, 0]);
+  const X = "X";
+  const O = "O";
+  const [turn, setTurn] = useState(X);
+  const [gameBoard, setGameBoard] = useState([0, 0, 0, 0, 0, 0, 0, 0, 0]);
 
   const showElement = (element) => {
     element.style.display = "inline";
@@ -13,15 +15,24 @@ function App() {
   const handleClick = ({ target }) => {
     if (
       !target.classList.contains("cell") ||
-      gameState[target.id.slice(-1) - 1] != 0
+      gameBoard[target.id.slice(-1) - 1] != 0
     )
       return;
 
-    gameState[target.id.slice(-1) - 1] = turn === "X" ? 1 : -1;
-    turn === "X"
+    const gameBoardCopy = [...gameBoard];
+    gameBoardCopy[target.id.slice(-1) - 1] = turn === X ? 1 : -1;
+    setGameBoard(gameBoardCopy);
+
+    turn === X
       ? showElement(target.querySelector(".x"))
       : showElement(target.querySelector(".o"));
-    setTurn(turn === "X" ? "O" : "X");
+
+    if (checkWinner(gameBoardCopy)) {
+      alert(`${turn} wins!`);
+      setGameBoard([0, 0, 0, 0, 0, 0, 0, 0, 0]);
+      setTurn(X);
+    }
+    setTurn(turn === X ? O : X);
   };
   return <Board onClick={handleClick} />;
 }
