@@ -20,7 +20,3 @@ export function checkWinner(gameBoard) {
   }
   return null;
 }
-
-export const showElement = (element) => {
-  element.style.display = "inline";
-};

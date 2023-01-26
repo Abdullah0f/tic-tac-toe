@@ -10,6 +10,7 @@ function App() {
   const [turn, setTurn] = useState(X);
   const [gameMode, setGameMode] = useState("singleplayer");
   const [gameBoard, setGameBoard] = useState([0, 0, 0, 0, 0, 0, 0, 0, 0]);
+
   useEffect(() => {
     if (gameBoard.every((cell) => cell === 0)) return;
     if (checkWinner(gameBoard)) finish("win");
@@ -19,9 +20,9 @@ function App() {
 
   useEffect(() => {
     if (gameMode === "singleplayer" && turn === O) {
-      setGameBoard(AiTurn(gameBoard));
+      setGameBoard((g) => AiTurn(g));
     }
-  }, [turn]);
+  }, [turn, gameMode]);
 
   const finish = async (type) => {
     await new Promise((r) => setTimeout(r, 50));
@@ -39,6 +40,8 @@ function App() {
       gameBoard[target.id.slice(-1)] !== 0
     )
       return;
+
+    // setGameBoard((g) => AiTurn(g, "X"));
 
     const gameBoardCopy = [...gameBoard];
     gameBoardCopy[target.id.slice(-1)] = turn === X ? 1 : -1;
