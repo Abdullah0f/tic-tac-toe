@@ -1,6 +1,9 @@
-import { checkWinner } from "./functions";
-export function AiTurn(gameBoard, turn) {
-  const move = miniMax(gameBoard, turn)[1];
+import { checkWinner, directWin } from "./functions";
+export function AiTurn(gameBoard, turn = "O") {
+  let move;
+  move = directWin(gameBoard, turn);
+  console.log(move, turn);
+  move = move ? move : miniMax(gameBoard, turn)[1];
   const gameBoardCopy = [...gameBoard];
   gameBoardCopy[move] = turn === "X" ? 1 : -1;
   return gameBoardCopy;
@@ -37,5 +40,3 @@ function miniMax(gameBoard, turn) {
     return bestScore;
   }
 }
-
-console.log(miniMax([1, 0, -1, 0, -1, 0, 0, 0, 1], "X"));
