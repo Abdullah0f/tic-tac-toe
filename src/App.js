@@ -4,7 +4,6 @@ import "./App.css";
 import Board from "./components/board";
 import ButtonsList from "./components/buttonsList";
 import { useEffect, useState } from "react";
-import WinLabel from "./components/winLabel";
 
 function App() {
   const X = "X";
@@ -12,6 +11,8 @@ function App() {
   const [turn, setTurn] = useState(X);
   const [gameMode, setGameMode] = useState("singleplayer");
   const [gameBoard, setGameBoard] = useState([0, 0, 0, 0, 0, 0, 0, 0, 0]);
+  const [gameState, setGameState] = useState("playing"); //[playing, finished]
+  const [label, setLabel] = useState("");
   const buttons = [
     {
       name: "mode",
@@ -35,13 +36,15 @@ function App() {
   }, [turn, gameMode]);
 
   const finish = async (type) => {
-    await new Promise((r) => setTimeout(r, 50));
-    type === "win" ? alert(`${turn} wins!`) : alert("Draw!");
-    reset();
+    // await new Promise((r) => setTimeout(r, 50));
+    setGameState("finished");
+    type === "win" ? setLabel(`${turn} wins!`) : setLabel("Draw!");
+    // reset();
   };
   function reset() {
     setGameBoard([0, 0, 0, 0, 0, 0, 0, 0, 0]);
     setTurn(X);
+    setGameState("playing");
   }
   function changeGameMode() {
     setGameMode((g) => (g === "singleplayer" ? "multiplayer" : "singleplayer"));
@@ -65,8 +68,14 @@ function App() {
     <div className="container">
       <h1>Tic Tac Toe</h1>
       <h2>Turn: {turn}</h2>
-      {/* <WinLabel /> */}
-      <Board onClick={handleClick} gameBoard={gameBoard} />
+      {/* {gameState === "finished" && <WinLabel label="Win" />} */}
+      <Board
+        onClick={handleClick}
+        gameBoard={gameBoard}
+        gameState={gameState}
+        label={label}
+        reset={reset}
+      />
       <ButtonsList buttons={buttons} />
     </div>
   );

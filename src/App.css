@@ -3,7 +3,7 @@ body{
   background: #00B4DB;  /* fallback for old browsers */
 background: -webkit-linear-gradient(to right, #0083B0, #00B4DB);  /* Chrome 10-25, Safari 5.1-6 */
 background: linear-gradient(to right, #0083B0, #00B4DB); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
-
+transition: all 0.2s ease;
 }
 .container{
   /* margin:30px; */
@@ -40,6 +40,8 @@ text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.25);
 .disabled .cell{
   pointer-events: none;
   opacity: 0.3;
+  -webkit-filter: grayscale(100%); /* Safari 6.0 - 9.0 */
+  filter: grayscale(100%);
 }
 .cell{
   /* width: 100px; */
@@ -47,9 +49,7 @@ text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.25);
   aspect-ratio: 1/1;
   cursor: pointer;
 }
-.win-label{
-  opacity: 0;
-}
+
 .label-container{
   background-color:#fff;
   padding: 10px 30px;
