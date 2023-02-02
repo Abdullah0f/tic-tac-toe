@@ -1,9 +1,10 @@
-import X from "../imgs/X.png";
-import O from "../imgs/O.png";
+import X from "../imgs/x.svg";
+import O from "../imgs/o.svg";
 const Cell = ({ index, onClick, gameBoard }) => {
   const getClass = (thing) => {
-    if (thing === "x") return "x" + (gameBoard[index] === 1 ? " show" : "");
-    else return "o" + (gameBoard[index] === -1 ? " show" : "");
+    if (thing === "x")
+      return "d-" + (gameBoard[index] === 1 ? " inline" : "none");
+    else return "d-" + (gameBoard[index] === -1 ? " inline" : "none");
   };
   return (
     <div className="cell" id={"cell-" + index} onClick={onClick}>

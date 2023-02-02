@@ -2,7 +2,9 @@ import { checkWinner } from "./utils/functions";
 import { AiTurn } from "./utils/Ai";
 import "./App.css";
 import Board from "./components/board";
+import ButtonsList from "./components/buttonsList";
 import { useEffect, useState } from "react";
+import WinLabel from "./components/winLabel";
 
 function App() {
   const X = "X";
@@ -10,6 +12,14 @@ function App() {
   const [turn, setTurn] = useState(X);
   const [gameMode, setGameMode] = useState("singleplayer");
   const [gameBoard, setGameBoard] = useState([0, 0, 0, 0, 0, 0, 0, 0, 0]);
+  const buttons = [
+    {
+      name: "mode",
+      label: gameMode.substring(0, 1).toUpperCase() + gameMode.substring(1),
+      onClick: changeGameMode,
+    },
+    { name: "reset", label: "Reset", onClick: reset, theme: "danger" },
+  ];
 
   useEffect(() => {
     if (gameBoard.every((cell) => cell === 0)) return;
@@ -29,10 +39,14 @@ function App() {
     type === "win" ? alert(`${turn} wins!`) : alert("Draw!");
     reset();
   };
-  const reset = () => {
+  function reset() {
     setGameBoard([0, 0, 0, 0, 0, 0, 0, 0, 0]);
     setTurn(X);
-  };
+  }
+  function changeGameMode() {
+    setGameMode((g) => (g === "singleplayer" ? "multiplayer" : "singleplayer"));
+    reset();
+  }
 
   const handleClick = ({ target }) => {
     if (
@@ -47,7 +61,15 @@ function App() {
     gameBoardCopy[target.id.slice(-1)] = turn === X ? 1 : -1;
     setGameBoard(gameBoardCopy);
   };
-  return <Board onClick={handleClick} gameBoard={gameBoard} />;
+  return (
+    <div className="container">
+      <h1>Tic Tac Toe</h1>
+      <h2>Turn: {turn}</h2>
+      {/* <WinLabel /> */}
+      <Board onClick={handleClick} gameBoard={gameBoard} />
+      <ButtonsList buttons={buttons} />
+    </div>
+  );
 }
 
 export default App;
