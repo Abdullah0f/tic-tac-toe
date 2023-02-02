@@ -11,8 +11,7 @@ function App() {
   const [turn, setTurn] = useState(X);
   const [gameMode, setGameMode] = useState("singleplayer");
   const [gameBoard, setGameBoard] = useState([0, 0, 0, 0, 0, 0, 0, 0, 0]);
-  const [gameState, setGameState] = useState("playing"); //[playing, finished]
-  const [label, setLabel] = useState("");
+  const [gameState, setGameState] = useState(["playing"]); //[playing, finished]
   const buttons = [
     {
       name: "mode",
@@ -37,14 +36,14 @@ function App() {
 
   const finish = async (type) => {
     // await new Promise((r) => setTimeout(r, 50));
-    setGameState("finished");
-    type === "win" ? setLabel(`${turn} wins!`) : setLabel("Draw!");
+    setGameState(["finished", type === "win" ? turn : "draw"]);
+    // type === "win" ? setLabel(`${turn} wins!`) : setLabel("Draw!");
     // reset();
   };
   function reset() {
     setGameBoard([0, 0, 0, 0, 0, 0, 0, 0, 0]);
     setTurn(X);
-    setGameState("playing");
+    setGameState(["playing"]);
   }
   function changeGameMode() {
     setGameMode((g) => (g === "singleplayer" ? "multiplayer" : "singleplayer"));
@@ -73,7 +72,6 @@ function App() {
         onClick={handleClick}
         gameBoard={gameBoard}
         gameState={gameState}
-        label={label}
         reset={reset}
       />
       <ButtonsList buttons={buttons} />

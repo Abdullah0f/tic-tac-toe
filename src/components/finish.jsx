@@ -1,13 +1,18 @@
 import Button from "./button";
-const Finish = ({ label, reset }) => {
+const Finish = ({ state, reset }) => {
+  const states = {
+    X: ["X won", "danger"],
+    O: ["O won", "success"],
+    draw: ["Draw", "dark"],
+  };
   return (
-    <div className="position-absolute start-50 bottom-50 translate-middle ">
-      <h1 className="text-danger ">{label}</h1>
+    <div className="position-absolute start-50 bottom-50 translate-middle result-label">
+      <h1 className={"text-" + states[state][1]}>{states[state][0]}</h1>
       <Button
         key={"restart"}
         label={"Restart"}
         onClick={reset}
-        theme={"danger"}
+        theme={"primary"}
       />
     </div>
   );
