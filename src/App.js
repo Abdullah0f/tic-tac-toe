@@ -11,7 +11,7 @@ function App() {
   const [turn, setTurn] = useState(X);
   const [gameMode, setGameMode] = useState("singleplayer");
   const [gameBoard, setGameBoard] = useState([0, 0, 0, 0, 0, 0, 0, 0, 0]);
-  const [gameState, setGameState] = useState(["playing"]); //[playing, finished]
+  const [gameState, setGameState] = useState(["playing"]); //[playing, finished, waiting]
   const buttons = [
     {
       name: "mode",
@@ -29,9 +29,15 @@ function App() {
   }, [gameBoard]);
 
   useEffect(() => {
-    if (gameMode === "singleplayer" && turn === O) {
-      setGameBoard((g) => AiTurn(g));
-    }
+    const x = async () => {
+      if (gameMode === "singleplayer" && turn === O) {
+        setGameState(["waiting"]);
+        await new Promise((r) => setTimeout(r, 300));
+        setGameBoard((g) => AiTurn(g));
+        setGameState(["playing"]);
+      }
+    };
+    x();
   }, [turn, gameMode]);
 
   const finish = async (type) => {

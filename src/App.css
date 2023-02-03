@@ -3,7 +3,7 @@ body{
   background: #00B4DB;  /* fallback for old browsers */
 background: -webkit-linear-gradient(to right, #0083B0, #00B4DB);  /* Chrome 10-25, Safari 5.1-6 */
 background: linear-gradient(to right, #0083B0, #00B4DB); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
-transition: all 0.2s ease;
+transition: all 2s ease;
 }
 .container{
   /* margin:30px; */
@@ -37,11 +37,14 @@ text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.25);
   flex-wrap: wrap;
   
 }
-.disabled .cell{
+.finished .cell{
   pointer-events: none;
   opacity: 0.3;
   -webkit-filter: grayscale(100%); /* Safari 6.0 - 9.0 */
   filter: grayscale(100%);
+}
+.disabled .cell{
+  pointer-events: none;
 }
 .result-label {
   text-shadow: 0px 0px 1px rgba(0, 0, 0, 0.75);
@@ -49,7 +52,12 @@ text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.25);
 .cell{
   /* width: 100px; */
   border: 5px solid black;
-  aspect-ratio: 1/1;
+  /* aspect-ratio: 1/1; */
+  /* width: 140px; */
+  height: 30vw;
+  max-height: 144px;
+  width: 100%;
+  max-width: 100%; 
   cursor: pointer;
 }
 

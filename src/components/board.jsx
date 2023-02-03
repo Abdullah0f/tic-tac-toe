@@ -3,7 +3,14 @@ import Finish from "./finish";
 const Board = ({ onClick, gameBoard, gameState, reset }) => {
   return (
     <div
-      className={" board" + (gameState[0] === "finished" ? " disabled" : "")}
+      className={
+        " board" +
+        (gameState[0] === "finished"
+          ? " disabled finished"
+          : gameState[0] === "waiting"
+          ? " disabled "
+          : "")
+      }
     >
       <Column indexes={[0, 3, 6]} onClick={onClick} gameBoard={gameBoard} />
       <Column indexes={[1, 4, 7]} onClick={onClick} gameBoard={gameBoard} />
