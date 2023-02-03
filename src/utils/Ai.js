@@ -1,8 +1,19 @@
 import { checkWinner, directWin } from "./functions";
-export function AiTurn(gameBoard, turn = "O") {
+export function AiTurn(gameBoard, difficulty, turn = "O") {
+  const states = {
+    easy: 0.5,
+    medium: 0.7,
+    hard: 1,
+  };
   let move;
   move = directWin(gameBoard, turn);
-  move = move ? move : miniMax(gameBoard, turn)[1];
+  if (!move) {
+    if (Math.random() > states[difficulty]) {
+      move = randomMove(gameBoard, turn);
+    } else {
+      move = miniMax(gameBoard, turn)[1];
+    }
+  }
   const gameBoardCopy = [...gameBoard];
   gameBoardCopy[move] = turn === "X" ? 1 : -1;
   return gameBoardCopy;
@@ -38,4 +49,11 @@ function miniMax(gameBoard, turn) {
     }
     return bestScore;
   }
+}
+function randomMove(gameBoard, move) {
+  const moves = [];
+  const gameBoardCopy = [...gameBoard];
+  for (let i in gameBoardCopy) if (gameBoardCopy[i] === 0) moves.push(i);
+
+  return moves[Math.floor(Math.random() * moves.length)];
 }

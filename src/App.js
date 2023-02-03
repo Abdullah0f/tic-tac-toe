@@ -1,4 +1,4 @@
-import { checkWinner } from "./utils/functions";
+import { checkWinner, capitalize } from "./utils/functions";
 import { AiTurn } from "./utils/Ai";
 import "./App.css";
 import Board from "./components/board";
@@ -12,11 +12,11 @@ function App() {
   const [gameMode, setGameMode] = useState("singleplayer");
   const [gameBoard, setGameBoard] = useState([0, 0, 0, 0, 0, 0, 0, 0, 0]);
   const [gameState, setGameState] = useState(["playing"]); //[playing, finished, waiting]
-  const [difficulty, setDifficulty] = useState("easy"); //[easy, medium, hard]
+  const [difficulty, setDifficulty] = useState("hard"); //[easy, medium, hard]
   const buttons = [
     {
       name: "mode",
-      label: gameMode.substring(0, 1).toUpperCase() + gameMode.substring(1),
+      label: capitalize(gameMode),
       onClick: changeGameMode,
     },
     { name: "reset", label: "Reset", onClick: reset, theme: "danger" },
@@ -58,6 +58,7 @@ function App() {
   }
   const handleDifficulty = (difficulty) => {
     setDifficulty(difficulty);
+    reset();
   };
 
   const handleClick = ({ target }) => {
@@ -77,6 +78,7 @@ function App() {
     <div className="container">
       <h1>Tic Tac Toe</h1>
       <h2>Turn: {turn}</h2>
+      <h2>Difficulty: {capitalize(difficulty)}</h2>
       {/* {gameState === "finished" && <WinLabel label="Win" />} */}
       <Board
         onClick={handleClick}
