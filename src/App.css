@@ -3,7 +3,7 @@ body{
   background: #00B4DB;  /* fallback for old browsers */
 background: -webkit-linear-gradient(to right, #0083B0, #00B4DB);  /* Chrome 10-25, Safari 5.1-6 */
 background: linear-gradient(to right, #0083B0, #00B4DB); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
-transition: all 2s ease;
+transition: all 0.2s ease;
 }
 .container{
   /* margin:30px; */
@@ -12,17 +12,10 @@ transition: all 2s ease;
   align-items: center;
   flex-direction: column;
   font-family: 'Montserrat';
-font-style: normal;
-font-weight: 700;
-font-size: 36px;
-line-height: 44px;
-/* identical to box height */
-
-text-align: center;
-
-color: #FFFFFF;
-
-text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.25);
+  font-size: 36px;
+  text-align: center;
+  color: #FFFFFF;
+  text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.25);
   
 }
 .board{
@@ -61,12 +54,12 @@ text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.25);
   cursor: pointer;
 }
 
-.label-container{
-  background-color:#fff;
-  padding: 10px 30px;
-  margin: 4px;
-  border-radius: 50px;
+.dropdown{
+  /* font-size: 16px; */
+  line-height:30px;
+  text-shadow: none;
 }
+
 @media screen and (max-width: 500px){
   .cell{
     border: 3px solid black;

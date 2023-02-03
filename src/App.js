@@ -12,6 +12,7 @@ function App() {
   const [gameMode, setGameMode] = useState("singleplayer");
   const [gameBoard, setGameBoard] = useState([0, 0, 0, 0, 0, 0, 0, 0, 0]);
   const [gameState, setGameState] = useState(["playing"]); //[playing, finished, waiting]
+  const [difficulty, setDifficulty] = useState("easy"); //[easy, medium, hard]
   const buttons = [
     {
       name: "mode",
@@ -33,7 +34,7 @@ function App() {
       if (gameMode === "singleplayer" && turn === O) {
         setGameState(["waiting"]);
         await new Promise((r) => setTimeout(r, 300));
-        setGameBoard((g) => AiTurn(g));
+        setGameBoard((g) => AiTurn(g, difficulty));
         setGameState(["playing"]);
       }
     };
@@ -55,6 +56,9 @@ function App() {
     setGameMode((g) => (g === "singleplayer" ? "multiplayer" : "singleplayer"));
     reset();
   }
+  const handleDifficulty = (difficulty) => {
+    setDifficulty(difficulty);
+  };
 
   const handleClick = ({ target }) => {
     if (
@@ -80,7 +84,11 @@ function App() {
         gameState={gameState}
         reset={reset}
       />
-      <ButtonsList buttons={buttons} />
+      <ButtonsList
+        buttons={buttons}
+        difficulty={difficulty}
+        onDifficulty={handleDifficulty}
+      />
     </div>
   );
 }

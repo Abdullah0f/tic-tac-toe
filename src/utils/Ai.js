@@ -2,7 +2,6 @@ import { checkWinner, directWin } from "./functions";
 export function AiTurn(gameBoard, turn = "O") {
   let move;
   move = directWin(gameBoard, turn);
-  console.log(move, turn);
   move = move ? move : miniMax(gameBoard, turn)[1];
   const gameBoardCopy = [...gameBoard];
   gameBoardCopy[move] = turn === "X" ? 1 : -1;
