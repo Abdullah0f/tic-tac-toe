@@ -8,38 +8,71 @@ import { useEffect, useState } from "react";
 function App() {
   const X = "X";
   const O = "O";
+  const initalState = {
+    gameBoard: [0, 0, 0, 0, 0, 0, 0, 0, 0],
+    turn: X,
+    gameState: ["playing"],
+    label: "Reset",
+  };
+  const difficulties = {
+    0: "easy",
+    1: "medium",
+    2: "hard",
+  };
   const [turn, setTurn] = useState(X);
   const [gameMode, setGameMode] = useState("singleplayer");
-  const [gameBoard, setGameBoard] = useState([0, 0, 0, 0, 0, 0, 0, 0, 0]);
-  const [gameState, setGameState] = useState(["playing"]); //[playing, finished, waiting]
-  const [difficulty, setDifficulty] = useState("hard"); //[easy, medium, hard]
+  const [gameBoard, setGameBoard] = useState(initalState.gameBoard);
+  const [gameState, setGameState] = useState(initalState.gameState); //[playing, finished, waiting]
+  const [difficulty, setDifficulty] = useState(2); //[0easy, 1medium, 2hard]
+  const [history, setHistory] = useState([initalState]); //[{gameBoard, turn}]
   const buttons = [
     {
       name: "mode",
       label: capitalize(gameMode),
       onClick: changeGameMode,
     },
+    {
+      type: "dropList",
+      items: [...history.slice(0, history.length - 1)],
+      label: "history",
+      theme: "success",
+      onSelect: handleHistory,
+    },
+    {
+      type: "dropList",
+      items: [{ label: "Easy" }, { label: "Meduim" }, { label: "Hard" }],
+      label: "Difficulty",
+      onSelect: handleDifficulty,
+      theme: "secondary",
+      active: parseInt(difficulty),
+    },
     { name: "reset", label: "Reset", onClick: reset, theme: "danger" },
   ];
 
   useEffect(() => {
     if (gameBoard.every((cell) => cell === 0)) return;
+
+    if (gameState[1] !== "changed") {
+      setHistory((h) => [...h, { label: "", gameBoard, turn, gameState }]);
+    }
     if (checkWinner(gameBoard)) finish("win");
     else if (gameBoard.every((cell) => cell !== 0)) finish("draw");
-    else setTurn((t) => (t === X ? O : X));
+    else {
+      setTurn((t) => (t === X ? O : X));
+      if (gameMode === "singleplayer")
+        setGameState((x) => (x[0] === "playing" ? ["waiting"] : ["playing"]));
+    }
   }, [gameBoard]);
 
   useEffect(() => {
     const x = async () => {
-      if (gameMode === "singleplayer" && turn === O) {
-        setGameState(["waiting"]);
+      if (gameState[0] === "waiting" && gameState[1] !== "changed") {
         await new Promise((r) => setTimeout(r, 300));
-        setGameBoard((g) => AiTurn(g, difficulty));
-        setGameState(["playing"]);
+        setGameBoard((g) => AiTurn(g, difficulties[difficulty]));
       }
     };
     x();
-  }, [turn, gameMode]);
+  }, [gameState]);
 
   const finish = async (type) => {
     // await new Promise((r) => setTimeout(r, 50));
@@ -51,15 +84,16 @@ function App() {
     setGameBoard([0, 0, 0, 0, 0, 0, 0, 0, 0]);
     setTurn(X);
     setGameState(["playing"]);
+    setHistory([initalState]);
   }
   function changeGameMode() {
     setGameMode((g) => (g === "singleplayer" ? "multiplayer" : "singleplayer"));
     reset();
   }
-  const handleDifficulty = (difficulty) => {
+  function handleDifficulty(difficulty) {
     setDifficulty(difficulty);
     reset();
-  };
+  }
 
   const handleClick = ({ target }) => {
     if (
@@ -68,17 +102,23 @@ function App() {
     )
       return;
 
-    // setGameBoard((g) => AiTurn(g, "X"));
-
     const gameBoardCopy = [...gameBoard];
     gameBoardCopy[target.id.slice(-1)] = turn === X ? 1 : -1;
     setGameBoard(gameBoardCopy);
   };
+  function handleHistory(index) {
+    index = parseInt(index);
+    const { gameBoard, turn, gameState } = history[index];
+    setGameBoard(gameBoard.map((x) => parseInt(x)));
+    setTurn(turn);
+    setGameState([...gameState, "changed"]);
+    setHistory((x) => x.slice(0, index + 1));
+  }
   return (
     <div className="container">
       <h1>Tic Tac Toe</h1>
       <h2>Turn: {turn}</h2>
-      <h2>Difficulty: {capitalize(difficulty)}</h2>
+      <h2>Difficulty: {difficulties[difficulty]}</h2>
       {/* {gameState === "finished" && <WinLabel label="Win" />} */}
       <Board
         onClick={handleClick}
@@ -86,11 +126,7 @@ function App() {
         gameState={gameState}
         reset={reset}
       />
-      <ButtonsList
-        buttons={buttons}
-        difficulty={difficulty}
-        onDifficulty={handleDifficulty}
-      />
+      <ButtonsList buttons={buttons} />
     </div>
   );
 }
