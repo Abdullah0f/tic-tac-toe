@@ -50,7 +50,9 @@ function App() {
       setTurn((t) => (t === X ? O : X));
       if (gameMode === "singleplayer")
         setGameState((x) => (x[0] === "playing" ? ["waiting"] : ["playing"]));
+      else setGameState(["playing"]);
     }
+    console.log(history, gameState);
   }, [gameBoard]);
 
   useEffect(() => {
@@ -70,7 +72,11 @@ function App() {
     setHistory([initalState]);
   }
   function undo() {
+    console.log(history);
+    console.log(gameState);
     if (history.length === 1) return;
+    if (history.length === 2) reset();
+    if (gameState[0] === "waiting") return;
     gameMode === "singleplayer"
       ? handleHistory(history.length - 3)
       : handleHistory(history.length - 2);
