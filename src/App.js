@@ -1,10 +1,10 @@
-import { checkWinner, capitalize } from "./utils/functions";
-import { AiTurn } from "./utils/Ai";
-import "./App.css";
+import { useEffect, useState } from "react";
+import Header from "./components/header";
 import Board from "./components/board";
 import ButtonsList from "./components/buttonsList";
-import { useEffect, useState } from "react";
-import { X, O, initalState, difficulties, delay } from "./utils/constants";
+import { checkWinner, capitalize } from "./utils/helpers";
+import { AiTurn } from "./utils/Ai";
+import { X, O, initalState, delay } from "./utils/constants";
 function App() {
   const [turn, setTurn] = useState(X);
   const [gameMode, setGameMode] = useState(initalState.gameMode);
@@ -103,27 +103,9 @@ function App() {
     setGameState([...gameState, "changed"]);
     setHistory((x) => x.slice(0, index + 1));
   }
-  const turnClass = "fw-bold " + (turn === X ? "text-red" : "text-green");
-  const difficultyClass =
-    "fw-bold " +
-    (difficulty === 2
-      ? "text-danger"
-      : difficulty === 1
-      ? "text-warning"
-      : "text-green");
-  console.log(typeof difficulty);
   return (
     <div className="container">
-      <h1>Tic Tac Toe</h1>
-      <h2>
-        Turn: <span className={turnClass}>{turn}</span>
-      </h2>
-      <h2>
-        Difficulty:{" "}
-        <span className={difficultyClass}>
-          {capitalize(difficulties[difficulty])}
-        </span>
-      </h2>
+      <Header turn={turn} difficulty={difficulty} />
       <Board
         onClick={handleClick}
         gameBoard={gameBoard}

@@ -29,3 +29,4 @@ export const difficultiesScore = {
   1: 0.7,
   2: 1,
 };
+export const link = "https://github.com/Abdullah0f/tic-tac-toe";

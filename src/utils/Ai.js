@@ -1,4 +1,4 @@
-import { checkWinner, directWin } from "./functions";
+import { checkWinner, directWin } from "./helpers";
 import { X, O, difficultiesScore } from "./constants";
 export function AiTurn(gameBoard, difficulty, turn = O) {
   let move;
