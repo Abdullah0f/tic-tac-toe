@@ -14,15 +14,15 @@ function App() {
   const [history, setHistory] = useState([initalState]); //[{gameBoard, turn}]
   const buttons = [
     {
-      label: capitalize(gameMode),
-      onClick: changeGameMode,
-    },
-    {
       type: "dropList",
       items: [...history.slice(0, history.length - 1)],
       label: "History",
       theme: "success",
       onSelect: handleHistory,
+    },
+    {
+      label: capitalize(gameMode),
+      onClick: changeGameMode,
     },
     {
       type: "dropList",
@@ -32,6 +32,9 @@ function App() {
       theme: "secondary",
       active: parseInt(difficulty),
     },
+  ];
+  const buttons2 = [
+    { label: "Undo", onClick: undo, theme: "warning" },
     { label: "Reset", onClick: reset, theme: "danger" },
   ];
 
@@ -65,6 +68,12 @@ function App() {
     setTurn(X);
     setGameState(["playing"]);
     setHistory([initalState]);
+  }
+  function undo() {
+    if (history.length === 1) return;
+    gameMode === "singleplayer"
+      ? handleHistory(history.length - 3)
+      : handleHistory(history.length - 2);
   }
   function changeGameMode() {
     setGameMode((g) => (g === "singleplayer" ? "multiplayer" : "singleplayer"));
@@ -105,6 +114,7 @@ function App() {
         gameState={gameState}
         reset={reset}
       />
+      <ButtonsList buttons={buttons2} />
       <ButtonsList buttons={buttons} />
     </div>
   );
