@@ -80,7 +80,7 @@ function App() {
     reset();
   }
   function handleDifficulty(difficulty) {
-    setDifficulty(difficulty);
+    setDifficulty(parseInt(difficulty));
     reset();
   }
 
@@ -103,11 +103,27 @@ function App() {
     setGameState([...gameState, "changed"]);
     setHistory((x) => x.slice(0, index + 1));
   }
+  const turnClass = "fw-bold " + (turn === X ? "text-red" : "text-green");
+  const difficultyClass =
+    "fw-bold " +
+    (difficulty === 2
+      ? "text-danger"
+      : difficulty === 1
+      ? "text-warning"
+      : "text-green");
+  console.log(typeof difficulty);
   return (
     <div className="container">
       <h1>Tic Tac Toe</h1>
-      <h2>Turn: {turn}</h2>
-      <h2>Difficulty: {capitalize(difficulties[difficulty])}</h2>
+      <h2>
+        Turn: <span className={turnClass}>{turn}</span>
+      </h2>
+      <h2>
+        Difficulty:{" "}
+        <span className={difficultyClass}>
+          {capitalize(difficulties[difficulty])}
+        </span>
+      </h2>
       <Board
         onClick={handleClick}
         gameBoard={gameBoard}

@@ -41,6 +41,15 @@ body{
 .result-label {
   text-shadow: 0px 0px 1px rgba(0, 0, 0, 0.75);
 }
+span{
+  text-shadow:none
+}
+.text-green{
+  color: #9FE961;
+}
+.text-red{
+  color: #FF5C5C;
+}
 .cell{
   border: 5px solid black;
   height: 30vw;

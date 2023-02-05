@@ -1,6 +1,6 @@
 import { checkWinner, directWin } from "./functions";
 import { X, O, difficultiesScore } from "./constants";
-export function AiTurn(gameBoard, difficulty, turn = "O") {
+export function AiTurn(gameBoard, difficulty, turn = O) {
   let move;
   move = directWin(gameBoard, turn);
   if (!move) {
@@ -11,7 +11,7 @@ export function AiTurn(gameBoard, difficulty, turn = "O") {
     }
   }
   const gameBoardCopy = [...gameBoard];
-  gameBoardCopy[move] = turn === "X" ? 1 : -1;
+  gameBoardCopy[move] = turn === X ? 1 : -1;
   return gameBoardCopy;
 }
 
@@ -20,12 +20,12 @@ function miniMax(gameBoard, turn, alpha = -99, beta = 99) {
   if (checkWinner(gameBoardCopy) === 1) return [1];
   if (checkWinner(gameBoardCopy) === -1) return [-1];
   if (gameBoardCopy.every((cell) => cell !== 0)) return [0];
-  if (turn === "X") {
+  if (turn === X) {
     let bestScore = [-99, null]; //[score, move]
     for (let i in gameBoardCopy) {
       if (gameBoardCopy[i] === 0) {
         gameBoardCopy[i] = 1;
-        const score = miniMax(gameBoardCopy, "O", alpha, beta)[0];
+        const score = miniMax(gameBoardCopy, O, alpha, beta)[0];
         gameBoardCopy[i] = 0;
         bestScore =
           Math.max(score, bestScore[0]) === score ? [score, i] : bestScore;
@@ -39,7 +39,7 @@ function miniMax(gameBoard, turn, alpha = -99, beta = 99) {
     for (let i in gameBoardCopy) {
       if (gameBoardCopy[i] === 0) {
         gameBoardCopy[i] = -1;
-        const score = miniMax(gameBoardCopy, "X", alpha, beta)[0];
+        const score = miniMax(gameBoardCopy, X, alpha, beta)[0];
         gameBoardCopy[i] = 0;
         bestScore =
           Math.min(score, bestScore[0]) === score ? [score, i] : bestScore;
@@ -50,7 +50,7 @@ function miniMax(gameBoard, turn, alpha = -99, beta = 99) {
     return bestScore;
   }
 }
-function randomMove(gameBoard, move) {
+function randomMove(gameBoard) {
   const moves = [];
   const gameBoardCopy = [...gameBoard];
   for (let i in gameBoardCopy) if (gameBoardCopy[i] === 0) moves.push(i);
