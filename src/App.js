@@ -13,6 +13,8 @@ function App() {
     turn: X,
     gameState: ["playing"],
     label: "Reset",
+    gameMode: "singleplayer",
+    difficulty: 2,
   };
   const difficulties = {
     0: "easy",
@@ -20,10 +22,10 @@ function App() {
     2: "hard",
   };
   const [turn, setTurn] = useState(X);
-  const [gameMode, setGameMode] = useState("singleplayer");
+  const [gameMode, setGameMode] = useState(initalState.gameMode);
   const [gameBoard, setGameBoard] = useState(initalState.gameBoard);
   const [gameState, setGameState] = useState(initalState.gameState); //[playing, finished, waiting]
-  const [difficulty, setDifficulty] = useState(2); //[0easy, 1medium, 2hard]
+  const [difficulty, setDifficulty] = useState(initalState.difficulty); //[0easy, 1medium, 2hard]
   const [history, setHistory] = useState([initalState]); //[{gameBoard, turn}]
   const buttons = [
     {
@@ -34,7 +36,7 @@ function App() {
     {
       type: "dropList",
       items: [...history.slice(0, history.length - 1)],
-      label: "history",
+      label: "History",
       theme: "success",
       onSelect: handleHistory,
     },
@@ -51,12 +53,12 @@ function App() {
 
   useEffect(() => {
     if (gameBoard.every((cell) => cell === 0)) return;
-
     if (gameState[1] !== "changed") {
       setHistory((h) => [...h, { label: "", gameBoard, turn, gameState }]);
     }
-    if (checkWinner(gameBoard)) finish("win");
-    else if (gameBoard.every((cell) => cell !== 0)) finish("draw");
+    if (checkWinner(gameBoard)) setGameState(["finished", turn]);
+    else if (gameBoard.every((cell) => cell !== 0))
+      setGameState(["finished", "draw"]);
     else {
       setTurn((t) => (t === X ? O : X));
       if (gameMode === "singleplayer")
@@ -74,11 +76,8 @@ function App() {
     x();
   }, [gameState]);
 
-  const finish = async (type) => {
-    // await new Promise((r) => setTimeout(r, 50));
+  const finish = (type) => {
     setGameState(["finished", type === "win" ? turn : "draw"]);
-    // type === "win" ? setLabel(`${turn} wins!`) : setLabel("Draw!");
-    // reset();
   };
   function reset() {
     setGameBoard([0, 0, 0, 0, 0, 0, 0, 0, 0]);

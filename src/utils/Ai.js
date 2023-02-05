@@ -19,32 +19,36 @@ export function AiTurn(gameBoard, difficulty, turn = "O") {
   return gameBoardCopy;
 }
 
-function miniMax(gameBoard, turn) {
+function miniMax(gameBoard, turn, alpha = -99, beta = 99) {
   const gameBoardCopy = [...gameBoard];
   if (checkWinner(gameBoardCopy) === 1) return [1];
   if (checkWinner(gameBoardCopy) === -1) return [-1];
   if (gameBoardCopy.every((cell) => cell !== 0)) return [0];
   if (turn === "X") {
-    let bestScore = [-10, -1];
+    let bestScore = [-99, null]; //[score, move]
     for (let i in gameBoardCopy) {
       if (gameBoardCopy[i] === 0) {
         gameBoardCopy[i] = 1;
-        const score = miniMax(gameBoardCopy, "O")[0];
+        const score = miniMax(gameBoardCopy, "O", alpha, beta)[0];
         gameBoardCopy[i] = 0;
         bestScore =
           Math.max(score, bestScore[0]) === score ? [score, i] : bestScore;
+        alpha = Math.max(alpha, score[0]);
+        if (beta <= alpha) break;
       }
     }
     return bestScore;
   } else {
-    let bestScore = [10, -1];
+    let bestScore = [99, null];
     for (let i in gameBoardCopy) {
       if (gameBoardCopy[i] === 0) {
         gameBoardCopy[i] = -1;
-        const score = miniMax(gameBoardCopy, "X")[0];
+        const score = miniMax(gameBoardCopy, "X", alpha, beta)[0];
         gameBoardCopy[i] = 0;
         bestScore =
           Math.min(score, bestScore[0]) === score ? [score, i] : bestScore;
+        beta = Math.min(beta, score[0]);
+        if (beta <= alpha) break;
       }
     }
     return bestScore;
