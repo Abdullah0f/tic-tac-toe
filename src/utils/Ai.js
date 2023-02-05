@@ -1,14 +1,10 @@
 import { checkWinner, directWin } from "./functions";
+import { X, O, difficultiesScore } from "./constants";
 export function AiTurn(gameBoard, difficulty, turn = "O") {
-  const states = {
-    easy: 0.5,
-    medium: 0.7,
-    hard: 1,
-  };
   let move;
   move = directWin(gameBoard, turn);
   if (!move) {
-    if (Math.random() > states[difficulty]) {
+    if (Math.random() > difficultiesScore[difficulty]) {
       move = randomMove(gameBoard, turn);
     } else {
       move = miniMax(gameBoard, turn)[1];

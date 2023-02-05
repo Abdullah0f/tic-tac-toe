@@ -8,6 +8,7 @@ const ButtonsList = ({ buttons }) => {
         {buttons.map((button) =>
           button.type === "dropList" ? (
             <DropList
+              key={button.label}
               items={button.items}
               label={button.label}
               onSelect={button.onSelect}
@@ -16,7 +17,7 @@ const ButtonsList = ({ buttons }) => {
             />
           ) : (
             <Button
-              key={button.name}
+              key={button.label}
               label={button.label}
               onClick={button.onClick}
               theme={button.theme}

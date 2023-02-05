@@ -4,23 +4,8 @@ import "./App.css";
 import Board from "./components/board";
 import ButtonsList from "./components/buttonsList";
 import { useEffect, useState } from "react";
-
+import { X, O, initalState, difficulties, delay } from "./utils/constants";
 function App() {
-  const X = "X";
-  const O = "O";
-  const initalState = {
-    gameBoard: [0, 0, 0, 0, 0, 0, 0, 0, 0],
-    turn: X,
-    gameState: ["playing"],
-    label: "Reset",
-    gameMode: "singleplayer",
-    difficulty: 2,
-  };
-  const difficulties = {
-    0: "easy",
-    1: "medium",
-    2: "hard",
-  };
   const [turn, setTurn] = useState(X);
   const [gameMode, setGameMode] = useState(initalState.gameMode);
   const [gameBoard, setGameBoard] = useState(initalState.gameBoard);
@@ -29,7 +14,6 @@ function App() {
   const [history, setHistory] = useState([initalState]); //[{gameBoard, turn}]
   const buttons = [
     {
-      name: "mode",
       label: capitalize(gameMode),
       onClick: changeGameMode,
     },
@@ -48,7 +32,7 @@ function App() {
       theme: "secondary",
       active: parseInt(difficulty),
     },
-    { name: "reset", label: "Reset", onClick: reset, theme: "danger" },
+    { label: "Reset", onClick: reset, theme: "danger" },
   ];
 
   useEffect(() => {
@@ -69,16 +53,13 @@ function App() {
   useEffect(() => {
     const x = async () => {
       if (gameState[0] === "waiting" && gameState[1] !== "changed") {
-        await new Promise((r) => setTimeout(r, 300));
-        setGameBoard((g) => AiTurn(g, difficulties[difficulty]));
+        await new Promise((r) => setTimeout(r, delay));
+        setGameBoard((g) => AiTurn(g, difficulty));
       }
     };
     x();
   }, [gameState]);
 
-  const finish = (type) => {
-    setGameState(["finished", type === "win" ? turn : "draw"]);
-  };
   function reset() {
     setGameBoard([0, 0, 0, 0, 0, 0, 0, 0, 0]);
     setTurn(X);
@@ -117,8 +98,7 @@ function App() {
     <div className="container">
       <h1>Tic Tac Toe</h1>
       <h2>Turn: {turn}</h2>
-      <h2>Difficulty: {difficulties[difficulty]}</h2>
-      {/* {gameState === "finished" && <WinLabel label="Win" />} */}
+      <h2>Difficulty: {capitalize(difficulties[difficulty])}</h2>
       <Board
         onClick={handleClick}
         gameBoard={gameBoard}
