@@ -1,6 +1,6 @@
 # Tic-Tac-Toe
 
-The access the web page [Click Here](https://astounding-liger-0b6add.netlify.app/).
+to access the web page [Click Here](https://astounding-liger-0b6add.netlify.app/).
 
 <!-- ## Available Scripts
 
