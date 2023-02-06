@@ -2,7 +2,7 @@ import { checkWinner, directWin } from "./helpers";
 import { X, O, difficultiesScore } from "./constants";
 export function AiTurn(gameBoard, difficulty, turn = O, difficultyScore) {
   let move;
-  if (gameBoard.every((cell) => cell === 0)) move = randomMove(gameBoard);
+  if (gameBoard.every((cell) => cell === 0)) move = chooseMove([0, 2, 6, 8]);
   else {
     difficultyScore = difficultyScore || difficultiesScore[difficulty];
     move = directWin(gameBoard, turn);

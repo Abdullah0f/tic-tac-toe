@@ -81,7 +81,7 @@ function App() {
   }
   function perfectMove() {
     if (gameState[0] === "waiting" || gameState[0] === "finished") return;
-    setGameBoard((g) => AiTurn(g, difficulty, turn));
+    setGameBoard((g) => AiTurn(g, difficulty, turn, 1));
   }
 
   function changeGameMode() {
