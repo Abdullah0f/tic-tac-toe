@@ -1,13 +1,12 @@
 import { checkWinner, directWin } from "./helpers";
 import { X, O, difficultiesScore } from "./constants";
-export function AiTurn(gameBoard, difficulty, turn = O, difficultyScore) {
+export function AiTurn(gameBoard, difficulty, turn = O) {
   let move;
   if (gameBoard.every((cell) => cell === 0)) move = chooseMove([0, 2, 6, 8]);
   else {
-    difficultyScore = difficultyScore || difficultiesScore[difficulty];
     move = directWin(gameBoard, turn);
     if (!move) {
-      if (Math.random() > difficultyScore) {
+      if (Math.random() > difficultiesScore[difficulty]) {
         move = randomMove(gameBoard, turn);
       } else {
         move = chooseMove(miniMax(gameBoard, turn)[1]);
@@ -46,8 +45,9 @@ function miniMax(gameBoard, turn) {
         const score = miniMax(gameBoardCopy, X)[0];
         gameBoardCopy[i] = 0;
         if (score === bestScore[0]) bestScore[1].push(i);
-        bestScore =
-          Math.min(score, bestScore[0]) === score ? [score, [i]] : bestScore;
+        else
+          bestScore =
+            Math.min(score, bestScore[0]) === score ? [score, [i]] : bestScore;
       }
     }
     return bestScore;
