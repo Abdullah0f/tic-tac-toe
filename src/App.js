@@ -13,13 +13,6 @@ function App() {
   const [difficulty, setDifficulty] = useState(initalState.difficulty); //[0easy, 1medium, 2hard]
   const [history, setHistory] = useState([initalState]); //[{gameBoard, turn}]
   const buttons = [
-    // {
-    //   type: "dropList",
-    //   items: [...history.slice(0, history.length - 1)],
-    //   label: "History",
-    //   theme: "success",
-    //   onSelect: handleHistory,
-    // },
     {
       label: capitalize(gameMode),
       onClick: changeGameMode,
@@ -81,7 +74,7 @@ function App() {
   }
   function perfectMove() {
     if (gameState[0] === "waiting" || gameState[0] === "finished") return;
-    setGameBoard((g) => AiTurn(g, difficulty, turn, 1));
+    setGameBoard((g) => AiTurn(g, 2, turn));
   }
 
   function changeGameMode() {
