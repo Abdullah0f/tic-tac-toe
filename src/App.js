@@ -13,13 +13,13 @@ function App() {
   const [difficulty, setDifficulty] = useState(initalState.difficulty); //[0easy, 1medium, 2hard]
   const [history, setHistory] = useState([initalState]); //[{gameBoard, turn}]
   const buttons = [
-    {
-      type: "dropList",
-      items: [...history.slice(0, history.length - 1)],
-      label: "History",
-      theme: "success",
-      onSelect: handleHistory,
-    },
+    // {
+    //   type: "dropList",
+    //   items: [...history.slice(0, history.length - 1)],
+    //   label: "History",
+    //   theme: "success",
+    //   onSelect: handleHistory,
+    // },
     {
       label: capitalize(gameMode),
       onClick: changeGameMode,
@@ -32,10 +32,11 @@ function App() {
       theme: "secondary",
       active: parseInt(difficulty),
     },
+    { label: "Reset", onClick: reset, theme: "danger" },
   ];
   const buttons2 = [
     { label: "Undo", onClick: undo, theme: "warning" },
-    { label: "Reset", onClick: reset, theme: "danger" },
+    { label: "Perfect Move", onClick: perfectMove, theme: "success" },
   ];
 
   useEffect(() => {
@@ -52,7 +53,6 @@ function App() {
         setGameState((x) => (x[0] === "playing" ? ["waiting"] : ["playing"]));
       else setGameState(["playing"]);
     }
-    console.log(history, gameState);
   }, [gameBoard]);
 
   useEffect(() => {
@@ -72,8 +72,6 @@ function App() {
     setHistory([initalState]);
   }
   function undo() {
-    console.log(history);
-    console.log(gameState);
     if (history.length === 1) return;
     if (history.length === 2) reset();
     if (gameState[0] === "waiting") return;
@@ -81,6 +79,11 @@ function App() {
       ? handleHistory(history.length - 3)
       : handleHistory(history.length - 2);
   }
+  function perfectMove() {
+    if (gameState[0] === "waiting" || gameState[0] === "finished") return;
+    setGameBoard((g) => AiTurn(g, difficulty, turn));
+  }
+
   function changeGameMode() {
     setGameMode((g) => (g === "singleplayer" ? "multiplayer" : "singleplayer"));
     reset();

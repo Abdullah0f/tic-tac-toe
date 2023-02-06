@@ -1,13 +1,17 @@
 import { checkWinner, directWin } from "./helpers";
 import { X, O, difficultiesScore } from "./constants";
-export function AiTurn(gameBoard, difficulty, turn = O) {
+export function AiTurn(gameBoard, difficulty, turn = O, difficultyScore) {
   let move;
-  move = directWin(gameBoard, turn);
-  if (!move) {
-    if (Math.random() > difficultiesScore[difficulty]) {
-      move = randomMove(gameBoard, turn);
-    } else {
-      move = miniMax(gameBoard, turn)[1];
+  if (gameBoard.every((cell) => cell === 0)) move = randomMove(gameBoard);
+  else {
+    difficultyScore = difficultyScore || difficultiesScore[difficulty];
+    move = directWin(gameBoard, turn);
+    if (!move) {
+      if (Math.random() > difficultyScore) {
+        move = randomMove(gameBoard, turn);
+      } else {
+        move = chooseMove(miniMax(gameBoard, turn)[1]);
+      }
     }
   }
   const gameBoardCopy = [...gameBoard];
@@ -15,36 +19,35 @@ export function AiTurn(gameBoard, difficulty, turn = O) {
   return gameBoardCopy;
 }
 
-function miniMax(gameBoard, turn, alpha = -99, beta = 99) {
+function miniMax(gameBoard, turn) {
   const gameBoardCopy = [...gameBoard];
   if (checkWinner(gameBoardCopy) === 1) return [1];
   if (checkWinner(gameBoardCopy) === -1) return [-1];
   if (gameBoardCopy.every((cell) => cell !== 0)) return [0];
   if (turn === X) {
-    let bestScore = [-99, null]; //[score, move]
+    let bestScore = [-99, []]; //[score, move]
     for (let i in gameBoardCopy) {
       if (gameBoardCopy[i] === 0) {
         gameBoardCopy[i] = 1;
-        const score = miniMax(gameBoardCopy, O, alpha, beta)[0];
+        const score = miniMax(gameBoardCopy, O)[0];
         gameBoardCopy[i] = 0;
-        bestScore =
-          Math.max(score, bestScore[0]) === score ? [score, i] : bestScore;
-        alpha = Math.max(alpha, score[0]);
-        if (beta <= alpha) break;
+        if (score === bestScore[0]) bestScore[1].push(i);
+        else
+          bestScore =
+            Math.max(score, bestScore[0]) === score ? [score, [i]] : bestScore;
       }
     }
     return bestScore;
   } else {
-    let bestScore = [99, null];
+    let bestScore = [99, []];
     for (let i in gameBoardCopy) {
       if (gameBoardCopy[i] === 0) {
         gameBoardCopy[i] = -1;
-        const score = miniMax(gameBoardCopy, X, alpha, beta)[0];
+        const score = miniMax(gameBoardCopy, X)[0];
         gameBoardCopy[i] = 0;
+        if (score === bestScore[0]) bestScore[1].push(i);
         bestScore =
-          Math.min(score, bestScore[0]) === score ? [score, i] : bestScore;
-        beta = Math.min(beta, score[0]);
-        if (beta <= alpha) break;
+          Math.min(score, bestScore[0]) === score ? [score, [i]] : bestScore;
       }
     }
     return bestScore;
@@ -55,5 +58,8 @@ function randomMove(gameBoard) {
   const gameBoardCopy = [...gameBoard];
   for (let i in gameBoardCopy) if (gameBoardCopy[i] === 0) moves.push(i);
 
+  return moves[Math.floor(Math.random() * moves.length)];
+}
+function chooseMove(moves) {
   return moves[Math.floor(Math.random() * moves.length)];
 }
